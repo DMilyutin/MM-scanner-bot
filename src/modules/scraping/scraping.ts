@@ -1,8 +1,12 @@
 import { Page } from "puppeteer";
 import { Price } from "src/model/prise";
 const cheerio = require('cheerio');
+var userAgent = require('user-agents');
 
 export class Scraping{
+    constructor(){
+        console.log('new Scraping')
+    }
 
     async startScraping(url: string, page: Page): Promise<Price>  {
 
@@ -14,15 +18,31 @@ export class Scraping{
         }
 
         try{
+            const agent = userAgent.random().toString()
+            await page.setUserAgent(agent)
 
             const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
-            await page.goto(url); 
+            await page.goto(url, {
+                waitUntil: 'domcontentloaded'
+            }); 
             await navigationPromise; 
 
             const content = await page.content();
-            
+            console.log('content ' + content)
             const CL = cheerio.load(content);
          
+             // Получаем ошибку
+             CL('.support').slice(0, 1).each((idx, elem) => { 
+                const errorTitle = CL(elem).text().trim();
+                if(errorTitle !== ''){
+                    console.log('err ' + errorTitle.trim())
+                    return
+                }
+                    
+                //const priseBad = priceTitle.trim().replaceAll(' ', '').replaceAll('₽', '')
+                //totalPrice.price = Number(priseBad)
+            })
+
             // Получаем цену
             CL('.sales-block-offer-price__price-final').slice(0, 1).each((idx, elem) => { 
                 const priceTitle = CL(elem).text();
@@ -52,6 +72,7 @@ export class Scraping{
             })
 
             return totalPrice
+            
         }catch(e){
             console.log(e)
             return
