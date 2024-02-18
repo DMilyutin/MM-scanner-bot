@@ -14,14 +14,15 @@ export class Scraping{
         }
 
         try{
-            await page.goto(url);
 
-            // const element = await page.waitForSelector('.pdp-header__title_only-title')
-            // console.log('element + ' + element)
+            const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
+            await page.goto(url); 
+            await navigationPromise; 
 
             const content = await page.content();
+            
             const CL = cheerio.load(content);
-        
+         
             // Получаем цену
             CL('.sales-block-offer-price__price-final').slice(0, 1).each((idx, elem) => { 
                 const priceTitle = CL(elem).text();

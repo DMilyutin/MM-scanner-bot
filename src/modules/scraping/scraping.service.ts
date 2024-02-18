@@ -3,6 +3,7 @@ import {ProductService } from '../product/product.service'
 import { Scraping } from './scraping'
 import { Injectable } from '@nestjs/common';
 import { log } from 'console';
+var userAgent = require('user-agents');
 
 @Injectable()
 export class ScrapingService{
@@ -13,13 +14,17 @@ export class ScrapingService{
     async updateProduct(){
         const browser = await puppeteer.launch({
             //executablePath: '/usr/bin/chromium-browser',
-            //headless: 'new',
+            headless: 'new',
             //args: ['--proxy-server=socks5://127.0.0.1:9050', '--disable-gpu', '--no-zygote']
             defaultViewport: null, 
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
-        const page = await browser.newPage();
+
+        const page = await browser.newPage(); 
+        
+
+        await page.setUserAgent(userAgent.random().toString())
         const scraping = new Scraping()
          
         const products = await this.productService.getAllProducts()
