@@ -12,9 +12,10 @@ export class ScrapingService{
 
     async updateProduct(){
         const browser = await puppeteer.launch({
+            executablePath: '/usr/bin/chromium-browser',
             headless: false,
             //args: ['--proxy-server=socks5://127.0.0.1:9050']
-            args: ['--no-sandbox']
+            args: ['--no-sandbox', '--disable-gpu', '--disable-setuid-sandbox', '--no-zygote']
         });
 
         const page = await browser.newPage();
