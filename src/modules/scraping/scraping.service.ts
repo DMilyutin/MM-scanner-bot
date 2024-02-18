@@ -12,14 +12,16 @@ export class ScrapingService{
     ){}
 
     async updateProduct(){
-        const randomPort = 9052
+        const PORTS = [9052, 9053, 9054, 9055, 9056, 9057, 9058]
+
+        const randomPort = PORTS[0]
 
         const browser = await puppeteer.launch({
             //executablePath: '/usr/bin/chromium-browser',
             headless: 'new',
-            //args: ['--proxy-server=socks5://127.0.0.1:9050', '--disable-gpu', '--no-zygote', `--proxy-server=socks5://127.0.0.1:${randomPort}`]
+            //args: ['--proxy-server=socks5://127.0.0.1:9050', '--disable-gpu', '--no-zygote', ]
             defaultViewport: null, 
-            args: ['--no-sandbox', '--disable-setuid-sandbox', ]
+            args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=socks5://127.0.0.1:${randomPort}`]
         });
 
 
