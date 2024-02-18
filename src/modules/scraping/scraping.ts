@@ -1,6 +1,5 @@
 import { Page } from "puppeteer";
 import { Price } from "src/model/prise";
-const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
 export class Scraping{
@@ -17,8 +16,8 @@ export class Scraping{
         try{
             await page.goto(url);
 
-            const element = await page.waitForSelector('.pdp-header__title_only-title')
-            console.log('element + ' + element)
+            // const element = await page.waitForSelector('.pdp-header__title_only-title')
+            // console.log('element + ' + element)
 
             const content = await page.content();
             const CL = cheerio.load(content);
@@ -41,7 +40,6 @@ export class Scraping{
             CL('.bonus-amount').slice(0, 1).each((idx, elem) => { 
                 const cashbackTitle = CL(elem).text();
                 const cashbackBad = cashbackTitle.trim().replaceAll(' ', '').replaceAll('₽', '')
-                console.log('cashbackBad - ' + cashbackBad) 
                 totalPrice.cashback = Number(cashbackBad)
             })
 

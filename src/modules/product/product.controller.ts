@@ -7,13 +7,13 @@ import { ProductDTO } from './dto/product.dto';
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
 
-    @Get()
-    getProducts(): Promise<ProductRO[]>{
-        return this.productService.getAllProducts()
-    }
+    // @Get()
+    // getProducts(): Promise<ProductRO[]>{
+    //     return this.productService.getAllProducts()
+    // }
 
-    @Post('/create')
-    createProduct(@Body() productDTO: ProductDTO): Promise<ProductRO>{
-        return this.productService.addProductToUser(productDTO, 123, 'Пользователь тест', 'testUserNmae')
-    }
+    // @Post('/create')
+    // createProduct(@Body() productDTO: ProductDTO): Promise<ProductRO>{
+    //     return this.productService.addProductToUser(productDTO, 123, 'Пользователь тест', 'testUserNmae')
+    // }
 }

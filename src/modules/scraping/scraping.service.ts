@@ -11,9 +11,8 @@ export class ScrapingService{
     ){}
 
     async updateProduct(){
-        console.log('updateProduct Called every 10 seconds')
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             //args: ['--proxy-server=socks5://127.0.0.1:9050']
         });
 
@@ -22,7 +21,6 @@ export class ScrapingService{
          
         const products = await this.productService.getAllProducts()
         if(!products){
-            console.log('нет - ' + products.length)
             return
         }
         
@@ -33,12 +31,10 @@ export class ScrapingService{
                 // Если один из параметров изменился, 
                 if (res.price != product.price || res.persent != product.persent || res.cashback != product.cashback){
                     // 1. Обновляем данные цены в своей базе
-                    log('цена на сайте изменилась')
                     await this.productService.updateProductPrice(product.id, res)
                     // 2. Делаем рассылку по подписанным пользователям в ТГ если цена изменилась в лучшую сторону
                     if(res.price < product.price || res.persent > product.persent || res.cashback > product.cashback){
-                        log('цена на сайте изменилась в лучшую сторону, нужно отправить оповещение')
-                        this.productService.sendProductInformation(product.id)
+                        await this.productService.sendProductInformation(product.id)
                     } 
                 }
             }catch(e){
