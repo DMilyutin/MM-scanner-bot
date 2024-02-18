@@ -14,6 +14,7 @@ export class ScrapingService{
         const browser = await puppeteer.launch({
             headless: false,
             //args: ['--proxy-server=socks5://127.0.0.1:9050']
+            args: ['--no-sandbox']
         });
 
         const page = await browser.newPage();
