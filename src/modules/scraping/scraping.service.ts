@@ -1,4 +1,7 @@
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
+const puppeteer = require('puppeteer-extra')
+import {KnownDevices} from 'puppeteer';
+const iPhone = KnownDevices['iPhone 13'];
 import {ProductService } from '../product/product.service'
 import { Scraping } from './scraping'
 import { Injectable } from '@nestjs/common';
@@ -17,12 +20,16 @@ export class ScrapingService{
     async updateProduct(){
         const PORTS = [9052, 9053, 9054, 9055, 9056, 9057, 9058]
 
-        const randomPort = PORTS[1]
+        const randomPort = PORTS[2]
+
+        const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+        puppeteer.use(StealthPlugin())
 
         const browser = await puppeteer.launch({
             headless: 'new',
             defaultViewport: null, 
-            args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=socks5://127.0.0.1:${randomPort}`]
+            args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=socks5://127.0.0.1:${randomPort}`],
+            slowMo:10, 
         });
 
 
@@ -39,8 +46,9 @@ export class ScrapingService{
             try{
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
 
+                await page.emulate(iPhone);
                 await page.goto(URL_MEGAMARKET, {
-                    waitUntil: ['domcontentloaded'],
+                    waitUntil: ['load'],
                     timeout: 60000
                 })
 

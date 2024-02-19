@@ -1,14 +1,13 @@
 import { Page } from "puppeteer";
 import { Price } from "src/model/prise";
 const cheerio = require('cheerio');
-var userAgent = require('user-agents');
 
 export class Scraping{
     constructor(){
         console.log('new Scraping')
     }
 
-    async startScraping(url: string, page: Page): Promise<Price>  {
+    async startScraping(url: string, page: any): Promise<Price>  {
 
         let totalPrice: Price = {
             name: '',
@@ -18,16 +17,17 @@ export class Scraping{
         }
 
         try{
-            const agent = userAgent.random().toString()
-            await page.setUserAgent(agent)
+            // const agent = userAgent.random().toString()
+            // await page.setUserAgent(agent)
 
-            const navigationPromise = page.waitForNavigation({waitUntil: ["domcontentloaded"]});
+            const navigationPromise = page.waitForNavigation({waitUntil: ["load"]});
             const selector = page.waitForSelector('h1') 
 
             await page.goto(url, {
-                waitUntil: ['domcontentloaded'],
-                timeout: 60000
-            }); 
+                waitUntil: ['load'],
+                timeout: 60000,
+                //referer: ''
+            })
             
             await navigationPromise; 
             await selector; 

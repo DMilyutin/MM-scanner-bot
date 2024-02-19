@@ -91,3 +91,6 @@ https://habr.com/ru/articles/740796/
 
 https://grammy.dev/guide/basics
 
+## Браузер puppeteer
+https://testengineer.ru/puppeteer-tutorial/ 
+

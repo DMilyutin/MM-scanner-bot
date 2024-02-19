@@ -9,7 +9,7 @@ export class CronService {
   ){}
   
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   //@Cron('10 * * * * *')
   async handleCron() { 
     console.log('Старт анализа цен ' + new Date()) 
