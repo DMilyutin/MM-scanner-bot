@@ -17,9 +17,7 @@ export class ScrapingService{
         const randomPort = PORTS[0]
 
         const browser = await puppeteer.launch({
-            //executablePath: '/usr/bin/chromium-browser',
             headless: 'new',
-            //args: ['--proxy-server=socks5://127.0.0.1:9050', '--disable-gpu', '--no-zygote', ]
             defaultViewport: null, 
             args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=socks5://127.0.0.1:${randomPort}`]
         });

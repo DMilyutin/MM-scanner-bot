@@ -13,7 +13,7 @@ export class Scraping{
         let totalPrice: Price = {
             name: '',
             price: 0,
-            persent: 0,
+            persent: 0, 
             cashback: 0
         }
 
@@ -22,14 +22,16 @@ export class Scraping{
             await page.setUserAgent(agent)
 
             const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
+            const selector = page.waitForSelector('img')  
             await page.goto(url, {
                 waitUntil: 'domcontentloaded'
             }); 
             await navigationPromise; 
+            await selector;
 
-            const content = await page.content();
-            //console.log('content ' + content)
-            const CL = cheerio.load(content);
+            const content = await page.content(); 
+            // console.log('content ' + content)
+            const CL = await cheerio.load(content);
          
              // Получаем ошибку
             //  CL('.support').slice(0, 1).each((idx, elem) => { 
@@ -53,6 +55,7 @@ export class Scraping{
             // Получаем процент кешбека
             CL('.bonus-percent').slice(0, 1).each((idx, elem) => { 
                 const persentTitle = CL(elem).text();
+                console.log("persentTitle" + persentTitle) 
                 const persentBad = persentTitle.trim().replaceAll(' ', '').replaceAll('%', '')
                 totalPrice.persent = Number(persentBad)
             })

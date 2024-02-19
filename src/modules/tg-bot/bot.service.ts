@@ -6,6 +6,7 @@ import { UserService } from "../user/user.service";
 import { ProductRO } from "../product/dto/product.ro";
 import TGErrorMessage from "src/model/tg-error";
 import tarifs from "src/model/tarifs";
+import { TestScraping } from "../scraping/scaping.tester";
 require('dotenv').config()
 
 const API_KEY_BOT = process.env.API_KEY_BOT;
@@ -74,7 +75,7 @@ export class TGBotService{
                         await ctx.reply('К сожалению, ваша подписка закончилась( Желаете продлить?')
                         this.sendTarifInfo(ctx.message.from.id)
                     }else{
-                        if(userProduct){
+                        if(userProduct && userProduct.length > 0){
                             userProduct.map( async (product) => {
                                 let inlineKeyboardData = JSON.stringify({
                                     type: 'DEL',
@@ -97,11 +98,6 @@ export class TGBotService{
                 }catch(e){
 
                 }
-                
-                
-
-
-                
             }
         })
 
@@ -138,6 +134,11 @@ export class TGBotService{
             }
 
             const url = ctx.message.text
+
+            // Тестирование скрапинга
+            // const testScraping = new TestScraping()
+            // await testScraping.testProduct(url)
+            // ----------------------
 
             if (!url.startsWith(MEGA_MARKET_URL)){
                 await ctx.reply('Невалидная ссылка! Убедитесь, что вы указали URL товара на сайте МегаМаркет')
