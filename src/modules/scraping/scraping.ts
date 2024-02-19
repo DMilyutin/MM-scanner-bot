@@ -21,13 +21,14 @@ export class Scraping{
             const agent = userAgent.random().toString()
             await page.setUserAgent(agent)
 
-            const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
-            const selector = page.waitForSelector('img')  
+            const navigationPromise = page.waitForNavigation({waitUntil: ["domcontentloaded"]});
+            const selector = page.waitForSelector('div') 
             await page.goto(url, {
-                waitUntil: 'domcontentloaded'
+                waitUntil: ['domcontentloaded'],
+                timeout: 60000
             }); 
             await navigationPromise; 
-            await selector;
+            await selector; 
 
             const content = await page.content(); 
             // console.log('content ' + content)
