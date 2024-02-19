@@ -12,7 +12,7 @@ export class CronService {
   @Cron(CronExpression.EVERY_HOUR)
   //@Cron('10 * * * * *')
   async handleCron() { 
-    console.log('Called every 10 seconds') 
+    console.log('Старт анализа цен ' + new Date()) 
     await this.scrapingService.updateProduct()
   }
 

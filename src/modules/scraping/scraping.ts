@@ -28,20 +28,20 @@ export class Scraping{
             await navigationPromise; 
 
             const content = await page.content();
-            console.log('content ' + content)
+            //console.log('content ' + content)
             const CL = cheerio.load(content);
          
              // Получаем ошибку
-             CL('.support').slice(0, 1).each((idx, elem) => { 
-                const errorTitle = CL(elem).text().trim();
-                if(errorTitle !== ''){
-                    console.log('err ' + errorTitle.trim())
-                    return
-                }
+            //  CL('.support').slice(0, 1).each((idx, elem) => { 
+            //     const errorTitle = CL(elem).text().trim();
+            //     if(errorTitle !== ''){
+            //         console.log('err ' + errorTitle.trim())
+            //         return
+            //     }
                     
-                //const priseBad = priceTitle.trim().replaceAll(' ', '').replaceAll('₽', '')
-                //totalPrice.price = Number(priseBad)
-            })
+            //     //const priseBad = priceTitle.trim().replaceAll(' ', '').replaceAll('₽', '')
+            //     //totalPrice.price = Number(priseBad)
+            // })
 
             // Получаем цену
             CL('.sales-block-offer-price__price-final').slice(0, 1).each((idx, elem) => { 
