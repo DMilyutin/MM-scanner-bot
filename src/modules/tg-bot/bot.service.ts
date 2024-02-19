@@ -155,7 +155,7 @@ export class TGBotService{
                 }
                 const bdProduct = await this.productService.addProductToUser(newProduct, ctx.message.from.id, ctx.message.from.first_name, ctx.message.from.username)
                 if(bdProduct){
-                    await ctx.reply("Товар успешно добавлен")
+                    await ctx.reply("Товар успешно добавлен и находится в обработке. Обработка занимает до 1 часа")
                     return
                 }else{
                     await ctx.reply("Ошибка при добавлении товара")
