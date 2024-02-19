@@ -13,7 +13,7 @@ export class CronService {
   //@Cron('10 * * * * *')
   async handleCron() { 
     console.log('Старт анализа цен ' + new Date()) 
-    //await this.scrapingService.updateProduct()
+    await this.scrapingService.updateProduct()
   }
 
 }
