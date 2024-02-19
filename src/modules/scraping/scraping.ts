@@ -22,13 +22,19 @@ export class Scraping{
             await page.setUserAgent(agent)
 
             const navigationPromise = page.waitForNavigation({waitUntil: ["domcontentloaded"]});
-            const selector = page.waitForSelector('div') 
+            const selector = page.waitForSelector('h1') 
             await page.goto(url, {
                 waitUntil: ['domcontentloaded'],
                 timeout: 60000
             }); 
             await navigationPromise; 
             await selector; 
+
+            // const element = await page.evaluate(() => {
+            //     // executed in the browser
+            //     return document.querySelector(".sales-block-offer-price__price-final");
+            //   }); 
+            // console.log("element" + element.nodeValue);
 
             const content = await page.content(); 
             console.log('content ' + content)
