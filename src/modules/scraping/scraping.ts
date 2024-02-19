@@ -31,7 +31,7 @@ export class Scraping{
             await selector; 
 
             const content = await page.content(); 
-            // console.log('content ' + content)
+            console.log('content ' + content)
             const CL = await cheerio.load(content);
          
              // Получаем ошибку
