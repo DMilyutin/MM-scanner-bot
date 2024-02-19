@@ -5,6 +5,9 @@ import { Injectable } from '@nestjs/common';
 import { ProductRO } from '../product/dto/product.ro';
 import { Page } from "puppeteer";
 
+const URL_MEGAMARKET = 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiWo_TFlreEAxWBQVUIHa1tA48QFnoECAgQAQ&url=https%3A%2F%2Fmegamarket.ru%2F&usg=AOvVaw3PYyPKPT8uFHymNEQ_Z0YX&opi=89978449'
+
+
 @Injectable()
 export class ScrapingService{
     constructor(
@@ -35,6 +38,12 @@ export class ScrapingService{
         for (let product of products){
             try{
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
+
+                await page.goto(URL_MEGAMARKET, {
+                    waitUntil: ['domcontentloaded'],
+                    timeout: 60000
+                })
+
                 let res = await scraping.startScraping(product.url, page)
                 console.log(`Результат анализа страницы: Название${res.name}, цена: ${res.price}`)
                 // Если один из параметров изменился, 

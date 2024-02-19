@@ -23,10 +23,12 @@ export class Scraping{
 
             const navigationPromise = page.waitForNavigation({waitUntil: ["domcontentloaded"]});
             const selector = page.waitForSelector('h1') 
+
             await page.goto(url, {
                 waitUntil: ['domcontentloaded'],
                 timeout: 60000
             }); 
+            
             await navigationPromise; 
             await selector; 
 
