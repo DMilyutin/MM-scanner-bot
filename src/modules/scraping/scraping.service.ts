@@ -14,7 +14,7 @@ export class ScrapingService{
     async updateProduct(){
         const PORTS = [9052, 9053, 9054, 9055, 9056, 9057, 9058]
 
-        const randomPort = PORTS[0]
+        const randomPort = PORTS[1]
 
         const browser = await puppeteer.launch({
             headless: 'new',
