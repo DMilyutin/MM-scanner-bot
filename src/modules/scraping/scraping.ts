@@ -25,26 +25,6 @@ export class Scraping{
             await page.waitForSelector('h1') ; 
             totalPrice.referer = page.url();
 
-            // await page.evaluate(async () => {
-            //     //await new Promise((resolve) => {
-            //         let distance = (Number(Math.random) + 1) * 100
-            //         window.scrollBy(0, distance); 
-            //     //})
-            // })
-
-            // await Promise.all([
-            //     page.waitForSelector('span .bonus-percent'),
-            //     page.waitForSelector('span .bonus-amount'), 
-            //     page.waitForSelector('h1 .pdp-header__title_only-title') 
-            //   ]);
-            
-             
-            // const element = await page.evaluate(() => {
-            //     // executed in the browser
-            //     return document.querySelector(".sales-block-offer-price__price-final");
-            //   }); 
-            // console.log("element" + element.nodeValue);
-
             const content = await page.content(); 
             console.log('content ' + content)
             const CL = cheerio.load(content); 

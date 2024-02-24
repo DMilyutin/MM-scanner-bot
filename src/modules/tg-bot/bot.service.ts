@@ -23,6 +23,13 @@ export class TGBotService{
         private readonly userService: UserService
     ){
         this.startBot()
+        //this.st() 
+    }
+
+    // Тестирование
+    private async st(){
+        const testScraping = new TestScraping()
+        await testScraping.testProduct('https://megamarket.ru/promo-page/details/#?slug=smartfon-apple-iphone-15-pro-256-gb-nano-sim-esim-black-titanium-100061379458&merchantId=40440')
     }
 
     private async startBot() {
@@ -134,11 +141,6 @@ export class TGBotService{
             }
 
             const url = ctx.message.text
-
-            // Тестирование скрапинга
-            // const testScraping = new TestScraping()
-            // await testScraping.testProduct(url)
-            // ----------------------
 
             if (!url.startsWith(MEGA_MARKET_URL)){
                 await ctx.reply('Невалидная ссылка! Убедитесь, что вы указали URL товара на сайте МегаМаркет')

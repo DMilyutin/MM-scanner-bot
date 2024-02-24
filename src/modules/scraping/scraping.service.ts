@@ -8,6 +8,7 @@ import { Page } from "puppeteer";
 import UserAgent = require("user-agents")
 
 let mmReferer = 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiWo_TFlreEAxWBQVUIHa1tA48QFnoECAgQAQ&url=https%3A%2F%2Fmegamarket.ru%2F&usg=AOvVaw3PYyPKPT8uFHymNEQ_Z0YX&opi=89978449'
+let mmReferer2 = 'https://megamarket.ru'
 
 
 @Injectable()
@@ -29,13 +30,19 @@ export class ScrapingService{
         const browser = await puppeteer.launch({
             headless: 'new',
             defaultViewport: null, 
-            args: ['--no-sandbox', '--disable-setuid-sandbox'], //`--proxy-server=socks5://127.0.0.1:${randomPort}`
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-web-security',
+                '--proxy-server=185.130.105.109:10000',
+                //`--proxy-server=socks5://127.0.0.1:${randomPort}`
+            ], //
             slowMo:10, 
         });
 
 
         const page = await browser.newPage(); 
-        const userAgent = new UserAgent({ deviceCategory: 'desktop' })
+        const userAgent = new UserAgent()
         await page.setUserAgent(userAgent.toString())  
         
         const scraping = new Scraping()
@@ -44,18 +51,19 @@ export class ScrapingService{
         if(!products){
             return
         }
+
+        await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
+        await page.goto(mmReferer2, {
+            waitUntil: ['load'],
+            timeout: 60000,
+            referer: mmReferer
+        })
+
+        mmReferer = page.url()
         
         for (let product of products){
             try{
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
-
-                await page.goto(mmReferer, {
-                    waitUntil: ['load'],
-                    timeout: 60000,
-                    referer: mmReferer
-                })
-
-                mmReferer = page.url()
 
                 let res = await scraping.startScraping(product.url, page, mmReferer)
                 mmReferer = res.referer
@@ -74,7 +82,7 @@ export class ScrapingService{
             } 
         }
         browser.close(); 
-    }
+    } 
 
     private async startScraping(scraping: Scraping, product: ProductRO, page: Page){
         
