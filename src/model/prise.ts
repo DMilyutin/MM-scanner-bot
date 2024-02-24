@@ -3,5 +3,6 @@ export class Price{
     price: number
     persent: number
     cashback: number
+    referer: string
 }
 

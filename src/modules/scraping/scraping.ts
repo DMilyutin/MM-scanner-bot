@@ -1,37 +1,44 @@
-import { Page } from "puppeteer";
 import { Price } from "src/model/prise";
-const cheerio = require('cheerio');
+import cheerio from 'cheerio';
 
 export class Scraping{
-    constructor(){
-        console.log('new Scraping')
-    }
 
-    async startScraping(url: string, page: any): Promise<Price>  {
+    async startScraping(url: string, page: any, mmReferer: string): Promise<Price>  {
 
         let totalPrice: Price = {
             name: '',
             price: 0,
             persent: 0, 
-            cashback: 0
+            cashback: 0,
+            referer: ''
         }
 
         try{
-            // const agent = userAgent.random().toString()
-            // await page.setUserAgent(agent)
-
-            const navigationPromise = page.waitForNavigation({waitUntil: ["load"]});
-            const selector = page.waitForSelector('h1') 
 
             await page.goto(url, {
                 waitUntil: ['load'],
                 timeout: 60000,
-                //referer: ''
+                referer: mmReferer,
             })
-            
-            await navigationPromise; 
-            await selector; 
 
+            // await page.waitForNavigation({waitUntil: ["load"]});
+            await page.waitForSelector('h1') ; 
+            totalPrice.referer = page.url();
+
+            // await page.evaluate(async () => {
+            //     //await new Promise((resolve) => {
+            //         let distance = (Number(Math.random) + 1) * 100
+            //         window.scrollBy(0, distance); 
+            //     //})
+            // })
+
+            // await Promise.all([
+            //     page.waitForSelector('span .bonus-percent'),
+            //     page.waitForSelector('span .bonus-amount'), 
+            //     page.waitForSelector('h1 .pdp-header__title_only-title') 
+            //   ]);
+            
+             
             // const element = await page.evaluate(() => {
             //     // executed in the browser
             //     return document.querySelector(".sales-block-offer-price__price-final");
@@ -40,8 +47,8 @@ export class Scraping{
 
             const content = await page.content(); 
             console.log('content ' + content)
-            const CL = await cheerio.load(content);
-         
+            const CL = cheerio.load(content); 
+            
              // Получаем ошибку
             //  CL('.support').slice(0, 1).each((idx, elem) => { 
             //     const errorTitle = CL(elem).text().trim();
