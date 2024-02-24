@@ -34,7 +34,7 @@ export class ScrapingService{
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-web-security',
-                '--proxy-server=185.130.105.109:10000',
+                //'--proxy-server=185.130.105.109:10000',
                 //`--proxy-server=socks5://127.0.0.1:${randomPort}`
             ], //
             slowMo:10, 
@@ -52,7 +52,7 @@ export class ScrapingService{
             return
         }
 
-        await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
+        //await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
         await page.goto(mmReferer2, {
             waitUntil: ['load'],
             timeout: 60000,

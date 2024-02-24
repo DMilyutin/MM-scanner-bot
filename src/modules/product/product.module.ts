@@ -6,7 +6,6 @@ import { ProductEntity } from './entity/product.entity';
 import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entyti/user.entity';
 import { UserProductEntity } from '../user-product/userProduct.entity';
-import { TGBotService } from '../tg-bot/bot.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProductEntity, UserEntity, UserProductEntity])],
