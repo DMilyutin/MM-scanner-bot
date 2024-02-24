@@ -45,7 +45,7 @@ export class ScrapingService{
         const userAgent = new UserAgent()
         await page.setUserAgent(userAgent.toString())  
         
-        const scraping = new Scraping()
+        
          
         const products = await this.productService.getAllProducts()
         if(!products){
@@ -64,7 +64,7 @@ export class ScrapingService{
         for (let product of products){
             try{
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
-
+                let scraping = new Scraping()
                 let res = await scraping.startScraping(product.url, page, mmReferer)
                 mmReferer = res.referer
                 console.log(`Результат анализа страницы: Название${res.name}, цена: ${res.price}, кешбек: ${res.cashback} (${res.persent}%)`)
@@ -77,14 +77,11 @@ export class ScrapingService{
                         await this.productService.sendProductInformation(product.id)
                     } 
                 }
+                scraping = null
             }catch(e){
                 console.log(e)
             } 
         }
         browser.close(); 
     } 
-
-    private async startScraping(scraping: Scraping, product: ProductRO, page: Page){
-        
-    }
 }

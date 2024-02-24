@@ -26,7 +26,7 @@ export class Scraping{
             totalPrice.referer = page.url();
 
             const content = await page.content(); 
-            console.log('content ' + content)
+            //console.log('content ' + content)
             const CL = cheerio.load(content); 
             
              // Получаем ошибку

@@ -99,6 +99,8 @@ export class ProductService {
             if (!product) 
                 throw new HttpException('Продукт не найден', HttpStatus.NOT_FOUND);
 
+            console.log('Продукт к поиску ' + productId + '. Продукт найден ' + product.id)
+
             await this.productRepository
                 .save({...product, price: newPrice.price, persent: newPrice.persent, cashback: newPrice.cashback, name: newPrice.name})
                 .then( () => {
