@@ -22,7 +22,7 @@ export class Scraping{
             })
 
             // await page.waitForNavigation({waitUntil: ["load"]});
-            await page.waitForSelector('h1') ; 
+            await page.waitForSelector('h1', {timeout: 60000}) ; 
             totalPrice.referer = page.url();
 
             const content = await page.content(); 
