@@ -26,12 +26,12 @@ export class ScrapingService {
         }))
 
         const browser = await puppeteer.launch({
-            headless: 'new',
+            headless: false,
             defaultViewport: null,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                `--proxy-server=${proxy}`, 
+                `--proxy-server=${proxy}`,  
                 //'--proxy-server=185.130.105.109:10000',
                 //`--proxy-server=socks5://127.0.0.1:${randomPort}`
             ],
@@ -40,7 +40,7 @@ export class ScrapingService {
 
 
         const page = await browser.newPage();
-        const userAgent = new UserAgent()
+        const userAgent = new UserAgent({ deviceCategory: 'mobile' })
         await page.setUserAgent(userAgent.toString())
 
 
@@ -51,26 +51,28 @@ export class ScrapingService {
         }
 
         await page.authenticate({username: proxyUsername, password: proxyPassword});
-        await page.goto(mmReferer2, {
+        await page.goto(mmReferer, {
             waitUntil: ['load'],
             timeout: 60000,
             referer: mmReferer
         })
 
-        mmReferer = page.url()
+
+        //mmReferer = page.url()
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+        await sleep(2000)
 
         for (let product of products) {
             try {
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
 
                 let scraping = new Scraping()
-                const page = await browser.newPage();
+                //const page = await browser.newPage();
                 //const userAgent = new UserAgent()
-                await page.setUserAgent(userAgent.toString())
-
+                //await page.setUserAgent(userAgent.toString())
+                mmReferer = "https://www.google.com"
                 let res = await scraping.startScraping(product.url, page, mmReferer)
-                mmReferer = res.referer
+                //mmReferer = res.referer
                 console.log(`Результат анализа страницы: Название${res.name}, цена: ${res.price}, кешбек: ${res.cashback} (${res.persent}%)`)
                 // Если один из параметров изменился
                 if (res !== null && res.price !== 0 && (res.price != product.price || res.persent != product.persent || res.cashback != product.cashback)) {
@@ -84,12 +86,12 @@ export class ScrapingService {
 
                 scraping = null
                 res = null
-                await page.close()
+                //await page.close()
                 await sleep(5000)
             } catch (e) {
                 console.log(e)
             }
         }
-        browser.close();
+        await browser.close();
     }
 }
