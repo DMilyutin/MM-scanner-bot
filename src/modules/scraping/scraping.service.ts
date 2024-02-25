@@ -31,7 +31,6 @@ export class ScrapingService {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-web-security',
                 `--proxy-server=${proxy}`, 
                 //'--proxy-server=185.130.105.109:10000',
                 //`--proxy-server=socks5://127.0.0.1:${randomPort}`
