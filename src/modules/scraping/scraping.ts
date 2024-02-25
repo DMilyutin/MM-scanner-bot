@@ -16,7 +16,7 @@ export class Scraping{
         try{
 
             await page.goto(url, {
-                waitUntil: 'networkidle0',
+                waitUntil: 'load',
                 timeout: 60000,
                 referer: mmReferer,
             })
