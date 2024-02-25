@@ -16,15 +16,15 @@ export class Scraping{
         try{
 
             await page.goto(url, {
-                waitUntil: ['load'],
+                waitUntil: 'networkidle0',
                 timeout: 60000,
                 referer: mmReferer,
             })
 
             // await page.waitForNavigation({waitUntil: ["load"]});
-            //await page.waitForSelector('h1', {timeout: 60000}) ; 
-            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-            await sleep(15000)
+            await page.waitForSelector('h1', {timeout: 90000, visible: true}) ;
+            // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            // await sleep(15000)
             totalPrice.referer = page.url();
 
             const content = await page.content(); 
