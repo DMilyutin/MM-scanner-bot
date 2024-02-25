@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer-extra"
 import { Scraping } from "./scraping";
 import UserAgent = require("user-agents")
+import { log } from "console";
 
 
 let mmReferer = 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiWo_TFlreEAxWBQVUIHa1tA48QFnoECAgQAQ&url=https%3A%2F%2Fmegamarket.ru%2F&usg=AOvVaw3PYyPKPT8uFHymNEQ_Z0YX&opi=89978449'
@@ -27,7 +28,7 @@ export class TestScraping{
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--proxy-server=185.130.105.109:10000',   
+                //'--proxy-server=185.130.105.109:10000',   
                 //`--proxy-server=${proxy}`,
                 //`--proxy-server=socks5://${proxy}`, 
                 //`--proxy-server=http://${proxy}`, 
@@ -55,8 +56,30 @@ export class TestScraping{
         const scraping = new Scraping() 
 
         try{
+            const products = ['Продукт 1', 'Продукт 2', 'Продукт 3']
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            log('Старт')
+            for (let product of products){
+                
+                log('перед таймаутом')
+                await sleep(3000)
+                log(product + ' с таймаутом')  
+
+                log('после таймаутом') 
+
+            }
+
+            log('Конец')
+
+            // (async function() {
+            //     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            //     console.log(1)
+            //     await sleep(1000)
+            //     console.log(2)
+            //     })()
+
             //await page.authenticate({username:'pFRcQftn', password:'6pHrXfSn'});
-            await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
+            //await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
             
 
             // https://whatismyipaddress.com/ru/index

@@ -1,6 +1,6 @@
 // import puppeteer from 'puppeteer';
 const puppeteer = require('puppeteer-extra')
-import {ProductService } from '../product/product.service'
+import { ProductService } from '../product/product.service'
 import { Scraping } from './scraping'
 import { Injectable } from '@nestjs/common';
 import { ProductRO } from '../product/dto/product.ro';
@@ -12,12 +12,12 @@ let mmReferer2 = 'https://megamarket.ru'
 
 
 @Injectable()
-export class ScrapingService{
+export class ScrapingService {
     constructor(
-        private readonly productService: ProductService 
-    ){}
+        private readonly productService: ProductService
+    ) { }
 
-    async updateProduct(){
+    async updateProduct() {
         // const PORTS = [9052, 9053, 9054, 9055, 9056, 9057, 9058]
 
         // const randomPort = PORTS[2]
@@ -29,7 +29,7 @@ export class ScrapingService{
 
         const browser = await puppeteer.launch({
             headless: 'new',
-            defaultViewport: null, 
+            defaultViewport: null,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
@@ -37,18 +37,18 @@ export class ScrapingService{
                 //'--proxy-server=185.130.105.109:10000',
                 //`--proxy-server=socks5://127.0.0.1:${randomPort}`
             ], //
-            slowMo:10, 
+            slowMo: 10,
         });
 
 
-        const page = await browser.newPage(); 
+        const page = await browser.newPage();
         const userAgent = new UserAgent()
-        await page.setUserAgent(userAgent.toString())  
-        
-        
-         
+        await page.setUserAgent(userAgent.toString())
+
+
+
         const products = await this.productService.getAllProducts()
-        if(!products){
+        if (!products) {
             return
         }
 
@@ -60,28 +60,32 @@ export class ScrapingService{
         })
 
         mmReferer = page.url()
-        
-        for (let product of products){
-            try{
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+        for (let product of products) {
+            try {
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
+
                 let scraping = new Scraping()
                 let res = await scraping.startScraping(product.url, page, mmReferer)
                 mmReferer = res.referer
                 console.log(`Результат анализа страницы: Название${res.name}, цена: ${res.price}, кешбек: ${res.cashback} (${res.persent}%)`)
                 // Если один из параметров изменился
-                if (res.price !== 0 && (res.price != product.price || res.persent != product.persent || res.cashback != product.cashback)){
+                if (res !== null && res.price !== 0 && (res.price != product.price || res.persent != product.persent || res.cashback != product.cashback)) {
                     // 1. Обновляем данные цены в своей базе
                     await this.productService.updateProductPrice(product.id, res)
                     // 2. Делаем рассылку по подписанным пользователям в ТГ если цена изменилась в лучшую сторону
-                    if(res.price < product.price || res.persent > product.persent || res.cashback > product.cashback){
+                    if (res.price < product.price || res.persent > product.persent || res.cashback > product.cashback) {
                         await this.productService.sendProductInformation(product.id)
-                    } 
+                    }
                 }
                 scraping = null
-            }catch(e){
+                res = null
+                await sleep(5000)
+            } catch (e) {
                 console.log(e)
-            } 
+            }
         }
-        browser.close(); 
-    } 
+        browser.close();
+    }
 }
