@@ -3,8 +3,6 @@ const puppeteer = require('puppeteer-extra')
 import { ProductService } from '../product/product.service'
 import { Scraping } from './scraping'
 import { Injectable } from '@nestjs/common';
-import { ProductRO } from '../product/dto/product.ro';
-import { Page } from "puppeteer";
 import UserAgent = require("user-agents")
 
 let mmReferer = 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiWo_TFlreEAxWBQVUIHa1tA48QFnoECAgQAQ&url=https%3A%2F%2Fmegamarket.ru%2F&usg=AOvVaw3PYyPKPT8uFHymNEQ_Z0YX&opi=89978449'
@@ -67,6 +65,10 @@ export class ScrapingService {
                 //await setTimeout(this.startScraping, 3000, scraping, product, page)
 
                 let scraping = new Scraping()
+                const page = await browser.newPage();
+                //const userAgent = new UserAgent()
+                await page.setUserAgent(userAgent.toString())
+
                 let res = await scraping.startScraping(product.url, page, mmReferer)
                 mmReferer = res.referer
                 console.log(`Результат анализа страницы: Название${res.name}, цена: ${res.price}, кешбек: ${res.cashback} (${res.persent}%)`)
@@ -79,8 +81,10 @@ export class ScrapingService {
                         await this.productService.sendProductInformation(product.id)
                     }
                 }
+
                 scraping = null
                 res = null
+                await page.close()
                 await sleep(5000)
             } catch (e) {
                 console.log(e)
