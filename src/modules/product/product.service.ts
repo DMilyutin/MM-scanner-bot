@@ -46,9 +46,15 @@ export class ProductService {
         } 
     }
 
-    async addProductToUser(productDTO: ProductDTO, chatId: number, firstName: string, username: string): Promise<ProductRO>{
+    async getUserProductByChatId(chatId: number): Promise<ProductRO[]>{
+        const user = await this.userService.getUserByChatId(chatId)
+        const products = await this.productRepository.find({where: {users: user}})
+        return (products.map( product => product.responceObject)) as ProductRO[]
+    }
+
+    async addProductToUser(productDTO: ProductDTO, chatId: number): Promise<ProductRO>{
         try{
-            const user = await this.userService.getUserEntity(chatId, firstName, username)
+            const user = await this.userService.getUserEntity(chatId)
             let product = await this.productRepository.findOne({where: {url: productDTO.url}})
 
             if (!product){

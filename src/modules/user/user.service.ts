@@ -22,10 +22,10 @@ export class UserService {
         return user.responceObject
     }
     
-    async getUserEntity(chatId: number, firstName: string, username: string): Promise<UserEntity> {
+    async getUserEntity(chatId: number): Promise<UserEntity> {
         const user = await this.userRepository.findOne({where: {chatId: chatId}})
         if(!user){
-            return await this.createUser(chatId, firstName, username, true) as UserEntity
+            //return await this.createUser(chatId, firstName, username, true) as UserEntity
         }
         return user
     }
