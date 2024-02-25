@@ -16,9 +16,9 @@ export class ScrapingService {
     ) { }
 
     async updateProduct() {
-        // const PORTS = [9052, 9053, 9054, 9055, 9056, 9057, 9058]
-
-        // const randomPort = PORTS[2]
+        const proxy = '95.165.14.53:57751'
+        const proxyUsername = '693cab'
+        const proxyPassword = '28c5bd'
 
         const StealthPlugin = require('puppeteer-extra-plugin-stealth')
         puppeteer.use(StealthPlugin({
@@ -32,10 +32,11 @@ export class ScrapingService {
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-web-security',
+                `--proxy-server=${proxy}`, 
                 //'--proxy-server=185.130.105.109:10000',
                 //`--proxy-server=socks5://127.0.0.1:${randomPort}`
-            ], //
-            slowMo: 10,
+            ],
+            slowMo: 15,
         });
 
 
@@ -50,7 +51,7 @@ export class ScrapingService {
             return
         }
 
-        //await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
+        await page.authenticate({username: proxyUsername, password: proxyPassword});
         await page.goto(mmReferer2, {
             waitUntil: ['load'],
             timeout: 60000,

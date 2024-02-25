@@ -16,7 +16,9 @@ export class TestScraping{
             enabledEvasions: new Set(["chrome.app", "chrome.csi", "defaultArgs", "navigator.plugins"])
         }))
         
-        //const proxy = '45.141.197.101:62521' 
+        const proxy = '95.165.14.53:57751'
+        const proxyUsername = '693cab'
+        const proxyPassword = '28c5bd'
         const browser = await puppeteer.launch({
             // ПРОМ настройки
             //headless: 'new',
@@ -28,13 +30,14 @@ export class TestScraping{
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
+                `--proxy-server=${proxy}`, 
                 //'--proxy-server=185.130.105.109:10000',   
                 //`--proxy-server=${proxy}`,
                 //`--proxy-server=socks5://${proxy}`, 
                 //`--proxy-server=http://${proxy}`, 
                 //'--proxy-server=45.141.197.101:62520',
                 //'--proxy-server=socks5://=45.141.197.101:62521',
-                //'--proxy-auth=pFRcQftn:6pHrXfSn'
+                '--proxy-auth=693cab:28c5bd' 
             ]
         });
 
@@ -56,20 +59,20 @@ export class TestScraping{
         const scraping = new Scraping() 
 
         try{
-            const products = ['Продукт 1', 'Продукт 2', 'Продукт 3']
-            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-            log('Старт')
-            for (let product of products){
+            // const products = ['Продукт 1', 'Продукт 2', 'Продукт 3']
+            // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            // log('Старт')
+            // for (let product of products){
                 
-                log('перед таймаутом')
-                await sleep(3000)
-                log(product + ' с таймаутом')  
+            //     log('перед таймаутом')
+            //     await sleep(3000)
+            //     log(product + ' с таймаутом')  
 
-                log('после таймаутом') 
+            //     log('после таймаутом') 
 
-            }
+            // }
 
-            log('Конец')
+            // log('Конец')
 
             // (async function() {
             //     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -78,13 +81,13 @@ export class TestScraping{
             //     console.log(2)
             //     })()
 
-            //await page.authenticate({username:'pFRcQftn', password:'6pHrXfSn'});
+            await page.authenticate({username: proxyUsername, password: proxyPassword});
             //await page.authenticate({username:'S6GzezAY', password:'RNW78Fm5'});
             
 
             // https://whatismyipaddress.com/ru/index
-            //await page.goto('https://whatismyipaddress.com/ru/index', { 
-            await page.goto(productUrl, {  
+            await page.goto('https://whatismyipaddress.com/ru/index', {  
+            //await page.goto(productUrl, {  
                 waitUntil: ['load'],
                 timeout: 60000,
                 referer: mmReferer  

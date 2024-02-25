@@ -25,7 +25,7 @@ export class TGBotService {
         private readonly userService: UserService
     ) {
         this.startBot()
-        //this.st() 
+        //this.st()
     }
 
     // Тестирование

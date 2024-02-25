@@ -94,3 +94,6 @@ https://grammy.dev/guide/basics
 ## Браузер puppeteer
 https://testengineer.ru/puppeteer-tutorial/ 
 
+## PROXY
+https://proxy-onedash.ru/proxy 
+
