@@ -23,16 +23,16 @@ export class Scraping{
 
             //await page.waitForNavigation({waitUntil: ["load"]});
 
-            if(page.url().startsWith('https://megamarket.ru/xpvnsulc/'))
-                return
+            // if(page.url().startsWith('https://megamarket.ru/xpvnsulc/'))
+            //     return
 
             await page.waitForSelector('h1', {timeout: 90000 }) ;
             // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
             // await sleep(15000)
             totalPrice.referer = page.url();
 
-            if(page.url().startsWith('https://megamarket.ru/xpvnsulc/'))
-                return
+            // if(page.url().startsWith('https://megamarket.ru/xpvnsulc/'))
+            //     return
 
             const content = await page.content(); 
             //console.log('content ' + content)
