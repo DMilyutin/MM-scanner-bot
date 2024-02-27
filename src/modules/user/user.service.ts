@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserRO } from './dto/user.ro';
 import { ProductEntity } from '../product/entity/product.entity';
 import tarifs from 'src/model/tarifs';
+import { log } from 'console';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
             return await this.createUser(chatId, firstName, username, false) as UserRO
         }
         return user.responceObject
-    }
+    } 
     
     async getUserEntity(chatId: number): Promise<UserEntity> {
         const user = await this.userRepository.findOne({where: {chatId: chatId}})
@@ -51,6 +52,7 @@ export class UserService {
             else
                 return newUser.responceObject
         }catch(e){
+            log(e.message)
             throw new HttpException('Ошибка при создании пользователя', HttpStatus.NOT_FOUND);
         }
     }

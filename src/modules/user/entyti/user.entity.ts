@@ -10,7 +10,7 @@ export class UserEntity {
     id: string;
 
     // id чата с пользователем
-    @Column('int')
+    @Column({type: 'bigint'})
     chatId: number
 
 
@@ -19,8 +19,11 @@ export class UserEntity {
     firstName: string;
     
     // Имя пользователя
-    @Column('varchar')
-    username: string
+    @Column({
+        type: 'varchar',
+        nullable: true,
+    })
+    username: string | null
 
     // Название тарифа
     @Column('varchar')

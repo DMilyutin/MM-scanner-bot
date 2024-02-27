@@ -89,7 +89,7 @@ export class ScrapingService {
                 //await page.close()
                 await sleep(5000)
             } catch (e) {
-                console.log(e)
+                console.log(e.message)
             }
         }
         await browser.close();

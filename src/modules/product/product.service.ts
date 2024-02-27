@@ -71,7 +71,7 @@ export class ProductService {
 
             return product.responceObject
         }catch(e){
-            console.log(e)
+            console.log(e.message)
         }
     }
 
@@ -93,7 +93,7 @@ export class ProductService {
     
             return newProduct
         }catch(e){
-            console.log(e)
+            console.log(e.message)
             throw new HttpException('Ошибка при добавлении продукта', HttpStatus.NOT_FOUND);
         }
         
@@ -115,6 +115,7 @@ export class ProductService {
                 })
             return true    
         }catch(e){
+            console.log(e.message)
             return false
         }
     }
@@ -135,6 +136,7 @@ export class ProductService {
             // Добавить удаление товаров при отуствии подписчиков
             return true 
         }catch(e){
+            console.log(e.message)
             return false
         }
         
