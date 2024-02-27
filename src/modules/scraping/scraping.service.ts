@@ -26,7 +26,7 @@ export class ScrapingService {
         }))
 
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: 'new',
             defaultViewport: null,
             args: [
                 '--no-sandbox',
