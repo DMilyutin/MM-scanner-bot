@@ -82,7 +82,7 @@ export class Scraping{
             return totalPrice
             
         }catch(e){
-            console.log(e)
+            console.log(e.message)
             return
         }
     }
